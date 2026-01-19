@@ -18,3 +18,40 @@
 	```bash
 	php artisan route:list
 	```
+
+5. Generar un controlador
+
+	```bash
+	php artisan make:controller HomeController
+	```
+
+6. Generamos modelo con migración
+	
+	```bash
+	php artisan make:model Category --migration
+	```
+
+7. Ejecutamos las migraciones
+	
+	```bash
+	php artisan migrate
+	```
+
+8. Revertimos las ultimas migraciones
+	
+	```bash
+	php artisan migrate:rollback
+	```
+
+9. Generar un controlador con funciones predefinidas
+
+	```bash
+	php artisan make:controller CategoryController --resource
+	```
+
+10. Habilitar el trabajo para APIs e instalar la libreria de Autenticación
+
+	```bash
+	php artisan install:api --passport
+	```
+

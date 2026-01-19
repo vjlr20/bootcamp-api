@@ -3,6 +3,23 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
+// Usando el controlador para manejar la ruta
+use App\Http\Controllers\HomeController;
+
+use App\Http\Controllers\CategoryController; // Controlador de categorías
+
+/**
+ * Metodo: GET, POST, PUT, DELETE
+ * Subrutina: /test
+ * Controlador: HomeController
+ * Metodo del controlador: test
+ * 
+ */
+Route::get('/test', [
+    HomeController::class,
+    'test'
+]);
+
 /* 
     Ruta principal de la aplicación.
 
@@ -13,18 +30,10 @@ use Illuminate\Http\Request;
 
     ?name=Name -> Parámetro opcional que se puede enviar en la URL
 */
-Route::get('/', function (Request $request) {
-    $nombre = $request->name;
-
-    $message = "Bienvenido a Laravel!<br/>";
-
-    if ($nombre != NULL) {
-        $message .= "Hola, " . $nombre . "!";
-    }
-
-    // Retornamos la vista o información
-    return $message;
-});
+Route::get('/', [
+    HomeController::class,
+    'home'
+]);
 
 /* 
     Ruta principal de la aplicación.
@@ -33,42 +42,32 @@ Route::get('/', function (Request $request) {
 
     {limit} -> Parámetro obligatorio que se debe enviar en la URL
 */
-Route::get('/info/{limit}', function(Request $request, $limit) {
-    // Generamos un número aleatorio
-    $num = rand(1, $limit);
-
-    if ($limit < 1) {
-        return "El límite debe ser un número mayor o igual a 1.";
-    }
-
-    $response = "Número aleatorio generado: " . $num . ". ";
-
-    return $response;
-});
+Route::get('/info/{limit}', );
 
 /* 
     Ruta principal de la aplicación.
 
     http://localhost:8000/about
 */
-Route::get('/about', function() {
-    $services = array(
-        'Desarrollo web',
-        'Diseño gráfico',
-        'Marketing digital',
-        'Consultoría tecnológica',
-        'Soporte técnico'
-    );
+Route::get('/about', [
+    HomeController::class,
+    'about'
+]);
 
-    $message = "Servicios ofrecidos:<br/>";
+Route::get('/services', [
+    HomeController::class,
+    'services'
+]);
 
-    foreach ($services as $service) {
-        $message .= "- " . $service . "<br/>";
-    }
+// http://localhost:8000/categories/index
+Route::get('categories/index', [
+    CategoryController::class, 
+    'index'
+]);
 
-    return $message;
-});
+// http://localhost:8000/categories/register
+Route::post('categories/register', [
+    CategoryController::class, 
+    'store'
+]);
 
-Route::get('/services', function() {
-    return "Servicios :D";
-});
