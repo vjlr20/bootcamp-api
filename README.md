@@ -60,3 +60,9 @@
 	```bash
 	php artisan make:model Category -mcr
 	```
+
+11. Generar un Request para validaciones
+
+	```bash
+	php artisan make:request Categories/RegisterRequest
+	```

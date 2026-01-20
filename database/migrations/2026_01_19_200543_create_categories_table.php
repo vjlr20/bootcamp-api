@@ -26,9 +26,11 @@ return new class extends Migration
          */
         Schema::create('categories', function (Blueprint $table) {
             $table->id(); // Primary key
+            
             $table->string('slug', 100)->unique(); // Unique slug
             $table->string('name', 150); // Category name
             $table->text('description')->nullable(); // Category description
+
             $table->boolean('status')->default(true); // Active status
             $table->timestamps(); // created_at and updated_at
             $table->softDeletes(); // deleted_at
