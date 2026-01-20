@@ -44,14 +44,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -110,14 +102,6 @@ class CategoryController extends Controller
                 'status' => 'error',
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -195,6 +179,7 @@ class CategoryController extends Controller
     {
         try {
             // Obtenemos solo aquellos con fecha de deleted_at
+            // SELECT * FROM categories WHERE deleted_at IS NOT NULL;
             $categories = Category::onlyTrashed()->get();
 
             if (count($categories) < 1) {
@@ -235,7 +220,8 @@ class CategoryController extends Controller
                 ], 404);
             }
             
-            $category->restore(); // Restaurar la categoría
+            // Restaurar la categoría
+            $category->restore();
 
             return response()->json([
                 'message' => 'Categoría restaurada correctamente.',

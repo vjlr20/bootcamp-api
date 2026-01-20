@@ -55,3 +55,8 @@
 	php artisan install:api --passport
 	```
 
+11. Generar un modelo con su migración y su controlador
+
+	```bash
+	php artisan make:model Category -mcr
+	```

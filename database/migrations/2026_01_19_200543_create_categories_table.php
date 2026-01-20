@@ -11,6 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        /**
+         * CREATE TABLE categories (
+         *  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+         * slug VARCHAR(100) UNIQUE,
+         * name VARCHAR(150),
+         * description TEXT,
+         * status TINYINT(1) DEFAULT 1,
+         * created_at TIMESTAMP NULL,
+         * updated_at TIMESTAMP NULL,
+         * deleted_at TIMESTAMP NULL
+         * );
+         * 
+         */
         Schema::create('categories', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->string('slug', 100)->unique(); // Unique slug
