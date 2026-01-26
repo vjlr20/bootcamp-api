@@ -79,7 +79,7 @@ class AuthController extends Controller
             $tokenResult = $loggedUser->createToken('Admin Access Token');
 
             // Almacenamos el token de acceso
-            $token = $tokenResult->accessToken;
+            $token = $tokenResult->token;
 
             // Cambiamos la fecha de expiración del token
             // $token->expires_at = Carbon::now()->addhours(3);
@@ -107,8 +107,57 @@ class AuthController extends Controller
         }
     }
 
-    public function profile() {}
-    public function logout() {}
+    public function profile(Request $request)
+    {
+        try {
+            $data = $request->user();
+
+            $user = User::where('id', $data->id)
+                        ->first();
+
+            if ($user == NULL) {
+                return response()->json([
+                    'message' => 'Usuario no encontrado.',
+                    'data' => null,
+                    'status' => 'error',
+                ], 404);
+            }
+
+            return response()->json([
+                'message' => 'Perfil del usuario obtenido exitosamente.',
+                'data' => $user,
+                'status' => 'success',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error al obtener el perfil del usuario.',
+                'data' => null,
+                'status' => 'error',
+            ], 500);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            // Revocamos el token de acceso del usuario
+            $user->token()->revoke();
+
+            return response()->json([
+                'message' => 'Cierre de sesión exitoso.',
+                'data' => null,
+                'status' => 'success',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error al cerrar sesión.',
+                'data' => null,
+                'status' => 'error',
+            ], 500);
+        }
+    }
 
     // public function sendResetLink() {}
     // public function resetPassword() {}
