@@ -72,3 +72,15 @@
 	```bash
 	php artisan migrate:fresh
 	```
+
+13. Generar el cliente de autenticación de Laravel Passport
+
+	```bash
+	php artisan passport:client --personal
+	```
+
+14. Generar una notificación de correo electrónico (Mensaje).
+
+	```bash
+	php artisan make:notification Auth/MailResetPasswordNotification
+	```

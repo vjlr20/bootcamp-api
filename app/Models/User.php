@@ -47,4 +47,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Enviar una notificación personalizada para restablecer la contraseña
+    public function sendPasswordResetNotification($token)
+    {
+        // Usamos la notificación personalizada
+        $this->notify(new \App\Notifications\Auth\MailResetPasswordNotification($token));
+    }
 }

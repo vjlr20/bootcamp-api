@@ -41,12 +41,15 @@ Route::prefix('roles')->group(function () {
 Route::prefix('auth')->group(function () {
     Route::post('register', [ AuthController::class, 'register'])->name('auth.register');
     Route::post('login', [ AuthController::class, 'login'])->name('auth.login');
+    Route::post('forgot-password', [ AuthController::class, 'sendResetLink'])->name('auth.forgot-password');
 
     // Rutas protegidas (Rutas que necesitan si o si el token de autenticación)
     Route::middleware(['auth:api'])->group(function () {
         Route::get('profile', [ AuthController::class, 'profile'])->name('auth.profile');
         Route::get('logout', [ AuthController::class, 'logout'])->name('auth.logout');
+        Route::put('update-profile', [ AuthController::class, 'updateProfile'])->name('auth.update-profile');
     });
+    
 });
 
 
