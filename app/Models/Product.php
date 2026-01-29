@@ -11,10 +11,12 @@ class Product extends Model
 
     protected $table = 'products';
 
+    // Campos que se pueden modificar o asignar
     protected $fillable = [
         'slug',
         'name',
         'description',
+        'product_image',
         'price',
         'stock',
         'status',

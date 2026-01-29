@@ -84,3 +84,9 @@
 	```bash
 	php artisan make:notification Auth/MailResetPasswordNotification
 	```
+
+15. Generar una migración de forma manual.
+	
+	```bash
+	php artisan make:migration add_image_column_to_products_table --table=products
+	```

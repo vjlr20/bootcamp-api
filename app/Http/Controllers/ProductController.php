@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
+
+use App\Http\Requests\Product\RegisterRequest;
 
 class ProductController extends Controller
 {
@@ -43,18 +46,49 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RegisterRequest $request)
     {
+        // Valida los datos
+        $validatedData = $request->validated();
+
         try {
+            $productImageName = NULL;
+
+            // Validamos si es diferente de nulo y si viene un archivo
+            if (
+                $request->hasFile('product_image') 
+                && 
+                $request->product_image != NULL
+            ) {
+                // Recuperar la imagen que se ha enviado
+                $image = $request->file('product_image');
+
+                // Formato o extensión de la imagen original (png, jpg, jpeg, etc.)
+                $extension = $image->getClientOriginalExtension();
+
+                /**
+                 * Generar un nombre único para la imagen
+                 * 2026-01-29_203015_product-image.png
+                 */
+                $filename = Carbon::now()->format('Y-m-d_His') . "_product-image." . $extension;
+
+                // Almacenar la imagen en el almacenamiento (storage/app/public/products)
+                $image->storeAs('public/products', $filename);
+
+                $productImageName = $filename;
+            }
+
             $newProduct = new Product();
 
             // Datos requeridos
             $newProduct->slug = $request->slug;
             $newProduct->name = $request->name;
-            $newProduct->description = $request->description;
+            $newProduct->description = $request->description == NULL ? NULL : $request->description;
             $newProduct->price = $request->price;
             $newProduct->stock = $request->stock;
             $newProduct->status = $request->status ?? true;
+            
+            $newProduct->product_image = $productImageName; // Asignamos el nombre de la imagen
 
             $newProduct->save();
 
@@ -172,6 +206,31 @@ class ProductController extends Controller
             return response()->json([
                 'error' => $th->getMessage(),
                 'message' => 'Error al eliminar el producto.',
+                'data' => null,
+                'status' => 'error',
+            ], 500);
+        }
+    }
+
+    public function getImage($filename)
+    {
+        try {
+            $path = storage_path('app/private/public/products/' . $filename);
+
+            if (!file_exists($path)) {
+                return response()->json([
+                    'message' => 'Imagen no encontrada.',
+                    'data' => null,
+                    'status' => 'error',
+                ], 404);
+            }
+
+            // Retorna la imagen guardada (No formato JSON)
+            return response()->file($path);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage(),
+                'message' => 'Error al obtener la imagen del producto.',
                 'data' => null,
                 'status' => 'error',
             ], 500);

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 // Usando el controlador para manejar la ruta
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 
 
 /**
@@ -58,5 +59,9 @@ Route::get('/services', [
     'services'
 ]);
 
-
+// http://localhost:8000/product-image/nombre-de-la-imagen.jpg
+Route::get('/product-image/{filename}', [
+    ProductController::class,
+    'getImage'
+]);
 
